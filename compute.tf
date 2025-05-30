@@ -35,12 +35,16 @@ data "aws_ami" "ubuntu_us_west" {
 
 }
 
-data "aws_caller_identity" "current_caller" {
+# This output will show the latest Ubuntu AMI ID in the us-east-1 region.
+data "aws_caller_identity" "current_caller" { }
 
-}
+# This data source retrieves the current AWS region.
+data "aws_region" "current_region" { }
 
-data "aws_region" "current_region" {
-
+data "aws_vpc" "vpc_prod" {
+  tags = {
+    Env = "prod"
+  }
 }
 
 # This output will show the latest Ubuntu AMI ID in the us-east-1 region.
@@ -54,6 +58,10 @@ output "aws_caller_identity" {
 
 output "aws_region" {
   value = data.aws_region.current_region
+}
+
+output "prod_vpc_id" {
+  value = data.aws_vpc.vpc_prod
 }
 
 # This output will show the latest Ubuntu AMI ID in the us-west-1 region.
