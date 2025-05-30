@@ -47,7 +47,14 @@ data "aws_vpc" "vpc_prod" {
   }
 }
 
+data "aws_availability_zones" "avail_zones" {
+  state = "available"
+}
+
 # This output will show the latest Ubuntu AMI ID in the us-east-1 region.
+output "az" {
+  value = data.aws_availability_zones.avail_zones.names
+}
 output "ubuntu_ami_data_us_east" {
   value = data.aws_ami.ubuntu.id
 }
