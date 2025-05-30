@@ -36,11 +36,11 @@ data "aws_ami" "ubuntu_us_west" {
 }
 
 data "aws_caller_identity" "current_caller" {
-  
+
 }
 
 data "aws_region" "current_region" {
-  
+
 }
 
 # This output will show the latest Ubuntu AMI ID in the us-east-1 region.
@@ -48,10 +48,18 @@ output "ubuntu_ami_data_us_east" {
   value = data.aws_ami.ubuntu.id
 }
 
-# This output will show the latest Ubuntu AMI ID in the us-west-1 region.
-output "ubuntu_ami_data_us_west" {
-  value = data.aws_ami.ubuntu_us_west.id
+output "aws_caller_identity" {
+  value = data.aws_caller_identity.current_caller
 }
+
+output "aws_region" {
+  value = data.aws_region.current_region
+}
+
+# This output will show the latest Ubuntu AMI ID in the us-west-1 region.
+# output "ubuntu_ami_data_us_west" {
+#   value = data.aws_ami.ubuntu_us_west.id
+# }
 
 resource "aws_instance" "web" {
   # AMI ID NGINX - ami-010e099e651d8635e
