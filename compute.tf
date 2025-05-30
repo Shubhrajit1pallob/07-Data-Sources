@@ -36,10 +36,10 @@ data "aws_ami" "ubuntu_us_west" {
 }
 
 # This output will show the latest Ubuntu AMI ID in the us-east-1 region.
-data "aws_caller_identity" "current_caller" { }
+data "aws_caller_identity" "current_caller" {}
 
 # This data source retrieves the current AWS region.
-data "aws_region" "current_region" { }
+data "aws_region" "current_region" {}
 
 data "aws_vpc" "vpc_prod" {
   tags = {
@@ -51,7 +51,26 @@ data "aws_availability_zones" "avail_zones" {
   state = "available"
 }
 
+data "aws_iam_policy_document" "my_policy" {
+  statement {
+    sid = "PublicReadGetObject"
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.my_bucket.arn}/*"]
+  }
+}
+
+
+resource "aws_s3_bucket" "my_bucket" {
+  bucket = "my_public_read_bucket"
+}
 # This output will show the latest Ubuntu AMI ID in the us-east-1 region.
+output "iam_policy" {
+  value = data.aws_iam_policy_document.my_policy.json
+}
 output "az" {
   value = data.aws_availability_zones.avail_zones.names
 }
